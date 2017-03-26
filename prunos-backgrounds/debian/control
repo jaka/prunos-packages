@@ -1,0 +1,11 @@
+Source: prunos-backgrounds
+Section: x11
+Priority: optional
+Maintainer: jaka <jaka@live.jp>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: https://github.com/prunos/
+
+Package: prunos-backgrounds
+Architecture: all
+Description: PrunOS default background

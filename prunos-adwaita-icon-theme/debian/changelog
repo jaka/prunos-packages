@@ -1,0 +1,5 @@
+adwaita-icon-theme (3.99) stable; urgency=high
+
+  * Dummy package to satisfy libgtk-3-common package.
+
+ -- jaka <jaka@live.jp>  Tue, 19 Apr 2016 00:00:00 +0200

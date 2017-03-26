@@ -1,0 +1,25 @@
+#!/usr/bin/make -f
+
+PACKAGE = $(firstword $(shell dh_listpackages))
+PACKAGE ?= prunos-faenza-icon-theme
+
+TARGET  = $(CURDIR)/debian/$(PACKAGE)
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	$(CURDIR)/configure_icons.sh "$(CURDIR)"
+
+override_dh_install:
+	rm -rf "$(CURDIR)/debian/$(PACKAGE)/usr/share/doc/"
+	$(eval INSTALLDIR=$(TARGET)/usr/share/icons/)
+	[ -d "$(INSTALLDIR)" ] || mkdir -p "$(INSTALLDIR)"
+	cp -r "$(CURDIR)/usr/share/icons/Faenza" "$(INSTALLDIR)"
+
+override_dh_auto_clean:
+	rm -fr $(CURDIR)/usr/
+
+override_dh_installdocs:
+
+override_dh_installchangelogs:

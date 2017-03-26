@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Gilouche-Phaenza
+Comment=openSUSE 11.0 theme with Faenza
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Gilouche
+MetacityTheme=Gilouche
+IconTheme=Faenza
+CursorTheme=DMZ-White
+CursorSize=24

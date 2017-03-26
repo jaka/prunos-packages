@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-remove" ]; then
+
+  FILE=/usr/share/icons/gnome/scalable/places/start-here.svg
+  [ -e "$FILE" ] && update-alternatives --install "$FILE" start-here.svg /usr/share/icons/Faenza/places/scalable/start-here.svg 40
+
+  UPDATE_CACHE=
+  if [ -x /usr/bin/gtk-update-icon-cache-3.0 ]; then
+    UPDATE_CACHE=gtk-update-icon-cache-3.0
+  elif [ -x /usr/bin/gtk-update-icon-cache ]; then
+    UPDATE_CACHE=gtk-update-icon-cache
+  fi
+
+  if [ -n "$UPDATE_CACHE" ]; then
+    if ! $UPDATE_CACHE --force --quiet /usr/share/icons/Faenza; then
+      echo "WARNING: icon cache generation failed"
+    fi
+  fi
+
+fi

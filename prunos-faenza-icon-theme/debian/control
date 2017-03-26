@@ -1,0 +1,15 @@
+Source: prunos-faenza-icon-theme
+Section: x11
+Priority: optional
+Maintainer: jaka <jaka@live.jp>
+Build-Depends: debhelper (>= 8.0.0), wget
+Standards-Version: 3.9.3
+Homepage: https://github.com/prunos/
+
+Package: prunos-faenza-icon-theme
+Architecture: all
+Depends: hicolor-icon-theme, libgtk2.0-bin | libgtk-3-bin
+Provides: mate-icon-theme
+Conflicts: mate-icon-theme-faenza
+Description: PrunOS Faenza icon theme
+ This package contains the Faenza icon theme made by Tiheum

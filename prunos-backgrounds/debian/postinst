@@ -1,0 +1,18 @@
+#!/bin/sh
+
+BG=/usr/share/backgrounds/default.jpg
+
+set -e
+
+[ "$1" = "configure" ] && {
+
+  FILE=/etc/lightdm/lightdm-gtk-greeter.conf
+  [ -f "$FILE" ] && [ -f "$BG" ] && {
+    if grep -q "^background=" $FILE; then
+      sed -i -r "s|^(background=).*$|\1$BG|" $FILE
+    else
+      sed -i -r "/^\[greeter\]/abackground=$BG" $FILE
+    fi
+  }
+
+}

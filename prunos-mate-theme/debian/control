@@ -1,0 +1,15 @@
+Source: prunos-mate-theme
+Section: x11
+Priority: optional
+Maintainer: jaka <jaka@live.jp>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: https://github.com/prunos/
+
+Package: prunos-mate-theme
+Architecture: all
+Provides: mate-themes
+Conflicts: mate-themes, gnome-themes-standard
+Depends: dmz-cursor-theme, prunos-faenza-icon-theme, gtk2-engines
+Description: PrunOS theme for the MATE Desktop
+ This package contains theme for the PrunOS MATE Desktop Environment.

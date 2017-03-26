@@ -1,0 +1,13 @@
+Source: adwaita-icon-theme
+Section: gnome
+Priority: optional
+Maintainer: jaka <jaka@live.jp>
+Build-Depends: debhelper (>= 8)
+Standards-Version: 3.9.5
+
+Package: adwaita-icon-theme
+Architecture: all
+Section: gnome
+Depends: hicolor-icon-theme
+Description: Dummy package without any icon
+ This package is just a dummy package to satisfy libgtk-3-common dependency.
