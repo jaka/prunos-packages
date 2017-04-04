@@ -1,51 +1,80 @@
 #!/bin/sh
 
-[ -n "$1" ] && DIR="$1" || DIR="."
-
+URL_ICONS1="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/faenza-icon-theme/faenza-icon-theme_1.3.zip"
+URL_ICONS2="http://http.debian.net/debian/pool/main/a/adwaita-icon-theme/adwaita-icon-theme_3.22.0.orig.tar.xz"
 LN="ln -sf"
 
-mkdir -p "$DIR/usr/share/icons"
-cd "$DIR/usr/share/icons"
+[ -n "$1" ] && DIR="$1" || DIR="."
 
-if ! wget --no-check-certificate -c https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/faenza-icon-theme/faenza-icon-theme_1.3.zip; then
+DIR="$DIR/usr/share/icons"
+mkdir -p "$DIR"
+
+if ! wget --no-check-certificate -c -P "$DIR" "$URL_ICONS1"; then
   echo "Could not download package"
   exit 1
 fi
 
-wget -c http://http.debian.net/debian/pool/main/a/adwaita-icon-theme/adwaita-icon-theme_3.22.0.orig.tar.xz
+wget -c -P "$DIR" "$URL_ICONS2"
 
-unzip faenza-icon-theme_1.3.zip
-rm faenza-icon-theme_1.3.zip
+unzip "$DIR/faenza-icon-theme_1.3.zip" -d "$DIR"
+rm -f "$DIR/faenza-icon-theme_1.3.zip"
 
-tar -zxf Faenza.tar.gz
-rm *.tar.gz
-iconfolder=Faenza
+tar -C "$DIR" -zxf "$DIR/Faenza.tar.gz"
+find $DIR -maxdepth 1 -type f -name "*.tar.gz" -exec rm {} \;
 
-sed -i 's/Faenza/Faenza\nExample=distributor-logo/g' "${iconfolder}/index.theme"
-sed -i -r "/\/scalable\]/{n;s/(Size=)96/\116/}" "${iconfolder}/index.theme"
+iconfolder="$DIR/Faenza"
+
+sed -i 's/Faenza/Faenza\nExample=distributor-logo/g' "$iconfolder/index.theme"
+sed -i -r "/\/scalable\]/{n;s/(Size=)96/\116/}" "$iconfolder/index.theme"
 
 distributor=debian
 iconname="distributor-logo-$distributor"
-$LN ./$iconname.svg "${iconfolder}/places/scalable/distributor-logo.svg"
+
+$LN ./$iconname.svg "$iconfolder/places/scalable/distributor-logo.svg"
+for f in `find "$iconfolder/places/scalable/" -type f -name "distributor-logo-*"`; do
+  [ "`basename $f`" = "$iconname.svg" ] && continue
+  find -L "$iconfolder/places/scalable/" -xtype l -samefile "$f" -exec rm -f {} \;
+  rm -f $f
+done
+
 for size in 48 32 24 22; do
-  $LN ./$iconname.png "${iconfolder}/places/${size}/distributor-logo.png"
+  $LN ./$iconname.png "$iconfolder/places/$size/distributor-logo.png"
+  for f in `find "$iconfolder/places/$size/" -type f -name "distributor-logo-*"`; do
+    [ "`basename $f`" = "$iconname.png" ] && continue
+    find -L "$iconfolder/places/$size/" -xtype l -samefile "$f" -exec rm -f {} \;
+    rm -f $f
+  done
 done
 
 iconname="start-here-gnome"
-$LN ./$iconname.svg "${iconfolder}/places/scalable/start-here.svg"
-$LN ./$iconname-symbolic.svg "${iconfolder}/places/scalable/start-here-symbolic.svg"
+
+$LN ./$iconname.svg "$iconfolder/places/scalable/start-here.svg"
+for f in `find "$iconfolder/places/scalable/" -type f -name "start-here-*" ! -name "*-symbolic.svg"`; do
+  [ "`basename $f`" = "$iconname.svg" ] && continue
+  rm -f $f
+done
 for size in 48 32 24 22; do
-  $LN ./$iconname.png "${iconfolder}/places/${size}/start-here.png"
+  $LN ./$iconname.png "$iconfolder/places/$size/start-here.png"
+  for f in `find "$iconfolder/places/$size/" -type f -name "start-here-*"`; do
+    [ "`basename $f`" = "$iconname.png" ] && continue
+    rm -f $f
+  done
 done
 
-for _file in novell-button.*; do
-  find . -name $_file -print0 | xargs -0 rm
+$LN ./$iconname-symbolic.svg "$iconfolder/places/scalable/start-here-symbolic.svg"
+for f in `find "$iconfolder/places/scalable/" -type f -name "start-here-*-symbolic.svg"`; do
+  [ "`basename $f`" = "$iconname-symbolic.svg" ] && continue
+  rm -f $f
 done
 
-find . -type f -exec chmod 644 '{}' \;
+for f in novell-button.*; do
+  find "$DIR" -name $f -exec rm {} \;
+done
 
 # Delete broken links
-find . -type l ! -exec test -e {} \; -exec rm {} \;
+find "$DIR" -type l ! -exec test -e {} \; -exec rm {} \;
+
+find "$DIR" -type f -exec chmod 644 '{}' \;
 
 # iconfolder type NAMES
 linknewnames() {
@@ -54,7 +83,7 @@ linknewnames() {
 
   for size in 16 22 24 32 48 64 96 scalable; do
 
-    [ -d "$1/$2/${size}" ] || continue
+    [ -d "$1/$2/$size" ] || continue
 
     if [ "$size" = "scalable" ]; then
       EXT=svg
@@ -93,10 +122,11 @@ linknewnames "$iconfolder" apps "$NAMES"
 linknewnames "$iconfolder" devices "battery:mate-power-manager"
 linknewnames "$iconfolder" categories "preferences-desktop:mateconf-editor preferences-desktop:mate-session-properties"
 linknewnames "$iconfolder" actions "system-shutdown-panel:system-shutdown-symbolic document-open:document-open-symbolic"
+linknewnames "$iconfolder" status "microphone-sensitivity-high-symbolic:audio-input-microphone-high microphone-sensitivity-low-symbolic:audio-input-microphone-low"
 
-[ -f "adwaita-icon-theme_3.22.0.orig.tar.xz" ] && {
-  tar -xJf adwaita-icon-theme_3.22.0.orig.tar.xz
-  rm adwaita-icon-theme_3.22.0.orig.tar.xz
+[ -f "$DIR/adwaita-icon-theme_3.22.0.orig.tar.xz" ] && {
+  tar -C "$DIR" -xJf "$DIR/adwaita-icon-theme_3.22.0.orig.tar.xz"
+  rm -f "$DIR/adwaita-icon-theme_3.22.0.orig.tar.xz"
 }
 
 ADD="scalable/actions/pan-down-symbolic.svg \
@@ -106,12 +136,12 @@ ADD="scalable/actions/pan-down-symbolic.svg \
 
 for icon in $ADD; do
   x="${icon%/*}"
-  [ -e "Faenza/${x#*/}/${x%/*}/${icon##*/}" ] || mv "adwaita-icon-theme-3.22.0/Adwaita/$icon" "Faenza/${x#*/}/${x%/*}/${icon##*/}"
+  [ -e "$iconfolder/${x#*/}/${x%/*}/${icon##*/}" ] || mv "$DIR/adwaita-icon-theme-3.22.0/Adwaita/$icon" "$iconfolder/${x#*/}/${x%/*}/${icon##*/}"
 done
 
 for icon in 16/actions/go-down.png 16/actions/go-up.png; do
   x="${icon%/*}"
-  mv "adwaita-icon-theme-3.22.0/Adwaita/${x%/*}x${icon}" "Faenza/${x#*/}/${x%/*}/${icon##*/}"
+  mv "$DIR/adwaita-icon-theme-3.22.0/Adwaita/${x%/*}x${icon}" "$iconfolder/${x#*/}/${x%/*}/${icon##*/}"
 done
 
-rm -fr adwaita-icon-theme-3.22.0
+rm -fr "$DIR/adwaita-icon-theme-3.22.0"
