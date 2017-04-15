@@ -24,8 +24,10 @@ find $DIR -maxdepth 1 -type f -name "*.tar.gz" -exec rm {} \;
 
 iconfolder="$DIR/Faenza"
 
-sed -i 's/Faenza/Faenza\nExample=distributor-logo/g' "$iconfolder/index.theme"
+sed -i "s/Faenza/Faenza\nExample=distributor-logo/g" "$iconfolder/index.theme"
 sed -i -r "/\/scalable\]/{n;s/(Size=)96/\116/}" "$iconfolder/index.theme"
+
+rm -fr "$iconfolder/extras/"
 
 distributor=debian
 iconname="distributor-logo-$distributor"
