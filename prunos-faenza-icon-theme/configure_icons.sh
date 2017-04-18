@@ -35,15 +35,15 @@ iconname="distributor-logo-$distributor"
 $LN ./$iconname.svg "$iconfolder/places/scalable/distributor-logo.svg"
 for f in `find "$iconfolder/places/scalable/" -type f -name "distributor-logo-*"`; do
   [ "`basename $f`" = "$iconname.svg" ] && continue
-  find -L "$iconfolder/places/scalable/" -xtype l -samefile "$f" -exec rm -f {} \;
+  find -L "$iconfolder/places/scalable/" -xtype l -samefile "$f" -exec rm {} \;
   rm -f $f
 done
 
-for size in 48 32 24 22; do
+for size in 96 64 48 32 24 22; do
   $LN ./$iconname.png "$iconfolder/places/$size/distributor-logo.png"
   for f in `find "$iconfolder/places/$size/" -type f -name "distributor-logo-*"`; do
     [ "`basename $f`" = "$iconname.png" ] && continue
-    find -L "$iconfolder/places/$size/" -xtype l -samefile "$f" -exec rm -f {} \;
+    find -L "$iconfolder/places/$size/" -xtype l -samefile "$f" -exec rm {} \;
     rm -f $f
   done
 done
@@ -55,7 +55,7 @@ for f in `find "$iconfolder/places/scalable/" -type f -name "start-here-*" ! -na
   [ "`basename $f`" = "$iconname.svg" ] && continue
   rm -f $f
 done
-for size in 48 32 24 22; do
+for size in 96 64 48 32 24 22; do
   $LN ./$iconname.png "$iconfolder/places/$size/start-here.png"
   for f in `find "$iconfolder/places/$size/" -type f -name "start-here-*"`; do
     [ "`basename $f`" = "$iconname.png" ] && continue
@@ -69,8 +69,10 @@ for f in `find "$iconfolder/places/scalable/" -type f -name "start-here-*-symbol
   rm -f $f
 done
 
-for f in novell-button.*; do
-  find "$DIR" -name $f -exec rm {} \;
+find "$iconfolder" -name "xfce4-*" -exec rm {} \;
+
+for f in gcstar.* glippy.* glippy-panel.* gnome-glchess.* novell-button.* redhat-* steam.*; do
+  find "$iconfolder" -name $f -exec rm {} \;
 done
 
 # Delete broken links
@@ -108,15 +110,21 @@ linknewnames() {
 }
 
 NAMES="baobab:mate-disk-usage-analyzer \
+       clock:mate-panel-clock \
        eog:eom \
        evince:atril \
        file-roller:engrampa \
+       gnome-calculator:galculator \
        gnome-display-properties:mate-preferences-desktop-display \
        gnome-network-properties:mate-network-properties \
-       gnome-power-manager:mate-power-statistics \
+       gnome-panel:mate-panel \
+       gnome-panel-launcher:mate-panel-launcher \
+       gnome-power-manager:mate-power-manager \
+       gnome-power-statistics:mate-power-statistics \
        gtk-info:hook-notifier \
        gtk-info:mate-notification-properties \
        menu-editor:mozo \
+       nautilus-actions:caja \
        openjdk-6:javaws"
 
 linknewnames "$iconfolder" apps "$NAMES"
@@ -124,7 +132,9 @@ linknewnames "$iconfolder" apps "$NAMES"
 linknewnames "$iconfolder" devices "battery:mate-power-manager"
 linknewnames "$iconfolder" categories "preferences-desktop:mateconf-editor preferences-desktop:mate-session-properties"
 linknewnames "$iconfolder" actions "system-shutdown-panel:system-shutdown-symbolic document-open:document-open-symbolic"
-linknewnames "$iconfolder" status "microphone-sensitivity-high-symbolic:audio-input-microphone-high microphone-sensitivity-low-symbolic:audio-input-microphone-low"
+linknewnames "$iconfolder" status "microphone-sensitivity-high-symbolic:audio-input-microphone-high microphone-sensitivity-low-symbolic:audio-input-microphone-low gpm-battery-000:gpm-battery-missing gpm-battery-000:gpm-battery-empty display-brightness-symbolic:gpm-brightness-lcd"
+
+$LN "../../status/scalable/display-brightness-symbolic.svg" "$iconfolder/apps/scalable/mate-brightness-applet.svg"
 
 [ -f "$DIR/adwaita-icon-theme_3.22.0.orig.tar.xz" ] && {
   tar -C "$DIR" -xJf "$DIR/adwaita-icon-theme_3.22.0.orig.tar.xz"
