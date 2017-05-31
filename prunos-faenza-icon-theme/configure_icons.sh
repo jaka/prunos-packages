@@ -71,7 +71,7 @@ done
 
 find "$iconfolder" -name "xfce4-*" -exec rm {} \;
 
-for f in gcstar.* glippy.* glippy-panel.* gnome-glchess.* novell-button.* redhat-* steam.*; do
+for f in gcstar.* glippy.* glippy-panel.* gnome-glchess.* novell-button.* redhat-* steam.* multimedia-player-*; do
   find "$iconfolder" -name $f -exec rm {} \;
 done
 
@@ -129,7 +129,7 @@ NAMES="baobab:mate-disk-usage-analyzer \
 
 linknewnames "$iconfolder" apps "$NAMES"
 
-linknewnames "$iconfolder" devices "battery:mate-power-manager"
+linknewnames "$iconfolder" devices "battery:mate-power-manager drive-removable-media:media-flash"
 linknewnames "$iconfolder" categories "preferences-desktop:mateconf-editor preferences-desktop:mate-session-properties"
 linknewnames "$iconfolder" actions "system-shutdown-panel:system-shutdown-symbolic document-open:document-open-symbolic"
 linknewnames "$iconfolder" status "microphone-sensitivity-high-symbolic:audio-input-microphone-high microphone-sensitivity-low-symbolic:audio-input-microphone-low gpm-battery-000:gpm-battery-missing gpm-battery-000:gpm-battery-empty display-brightness-symbolic:gpm-brightness-lcd"
