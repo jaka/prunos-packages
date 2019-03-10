@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Prunos
+Comment=An adaptive Gtk+ theme based on Material Design with Deepin icons
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Prunos
+MetacityTheme=Prunos
+IconTheme=Deepin
+CursorTheme=DMZ-White
+CursorSize=24

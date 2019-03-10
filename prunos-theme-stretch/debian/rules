@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+
+PACKAGE = $(firstword $(shell dh_listpackages))
+PACKAGE ?= prunos-theme-stretch
+
+TARGET  = $(CURDIR)/debian/$(PACKAGE)/usr/share
+
+%:
+	dh $@
+
+override_dh_install:
+	mkdir -p "$(TARGET)/themes/Prunos"
+	mkdir -p "$(TARGET)/icons"
+	cp -r $(CURDIR)/theme/* "$(TARGET)/themes/Prunos/"
+	cp -r $(CURDIR)/icons/* "$(TARGET)/icons/"
+
+override_dh_installdocs:
+
+override_dh_installchangelogs:
