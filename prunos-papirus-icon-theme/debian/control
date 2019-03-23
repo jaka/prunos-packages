@@ -1,0 +1,14 @@
+Source: prunos-papirus-icon-theme
+Section: x11
+Priority: optional
+Maintainer: jaka <jaka@live.jp>
+Build-Depends: debhelper (>= 8.0.0), git
+Standards-Version: 3.9.3
+Homepage: https://github.com/prunos/
+
+Package: prunos-papirus-icon-theme
+Architecture: all
+Depends: hicolor-icon-theme, libgtk2.0-bin | libgtk-3-bin
+Provides: gnome-icon-theme, mate-icon-theme
+Description: PrunOS Papirus icon theme
+ This package contains the Papirus icon theme
